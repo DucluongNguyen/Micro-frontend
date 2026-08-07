@@ -1,0 +1,6 @@
+node_modules
+.dist
+.federation
+*.log
+.env*.local
+.DS_Store

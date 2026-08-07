@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+
+    // `paths` alone (no `baseUrl`) resolves relative to this file's own
+    // directory - `baseUrl` is deprecated as of TS 5.9 and TS 7.0 removes it
+    // entirely (https://aka.ms/ts6). Don't re-add it or the "ignoreDeprecations"
+    // suggestion the editor offers: that option's value must match the
+    // *installed* compiler's expected sentinel, which is why "6.0" errored
+    // with TS5103 here - dropping baseUrl avoids the warning altogether.
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "module-federation.config.ts", "rspack.config.ts"],
+  "exclude": ["node_modules", ".dist"]
+}

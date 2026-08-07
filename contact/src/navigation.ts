@@ -1,0 +1,22 @@
+/**
+ * Exposed as `Contact/navigation` so the container's sidebar can render
+ * this remote's nested routes without hardcoding them - see
+ * portal-container/base/src/hooks/useRemoteNavigation.ts. Keep this in sync
+ * with the routes defined in App.tsx.
+ */
+export interface RemoteNavItem {
+  /** Path relative to wherever this remote is mounted - '' for the index route. */
+  path: string;
+  label: string;
+  /**
+   * Name of an `@ant-design/icons` component (e.g. 'PhoneOutlined'). A
+   * string, not the component itself - see the matching comment in
+   * portal-relationship/base/src/navigation.ts.
+   */
+  icon?: string;
+}
+
+export const navigation: RemoteNavItem[] = [
+  { path: '', label: 'Contact', icon: 'PhoneOutlined' },
+  { path: 'form', label: 'Form', icon: 'FormOutlined' },
+];
