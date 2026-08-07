@@ -73,7 +73,14 @@ export default function AppLayout() {
   ];
 
   const remoteMenuItems: MenuProps['items'] = sections.map((section) => ({
-    key: section.mountPath,
+    // Distinct from every child item's key below: a section's index route
+    // (`{ path: '', ... }` in the remote's `./navigation`) resolves to
+    // `fullPath === section.mountPath`, so using `section.mountPath` here
+    // too would give the SubMenu and its own child item the same key - antd
+    // Menu keys must be unique across the *whole* tree, not just per level,
+    // and reusing one triggers "Duplicated key ... used in Menu by path
+    // [dashboard > dashboard]".
+    key: `group:${section.mountPath}`,
     label: section.label,
     icon: resolveIcon(section.icon),
     children: section.failed

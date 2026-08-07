@@ -15,7 +15,15 @@ export function RemoteBoundary({ children }: { children: ReactNode }) {
       <Suspense
         fallback={
           <Flex align="center" justify="center" style={{ width: '100%', height: '100%', minHeight: 240 }}>
-            <Spin size="large" tip="Loading..." />
+            {/* antd v5: `tip` only renders when Spin either wraps content
+                ("nest" pattern) or is `fullscreen` - passing `tip` to a
+                bare, childless <Spin> is silently ignored and warns. A
+                fullscreen overlay is too heavy for a boundary that only
+                covers one panel of the layout, so nest it around an empty
+                placeholder sized to the same minHeight instead. */}
+            <Spin size="large" tip="Loading...">
+              <div style={{ width: 200, height: 120 }} />
+            </Spin>
           </Flex>
         }
       >
