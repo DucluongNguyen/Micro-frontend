@@ -12,6 +12,8 @@ import AppLayout from '@/layouts/AppLayout';
 const DashboardApp = lazy(() => import('Dashboard/App'));
 const AboutApp = lazy(() => import('About/App'));
 const ContactApp = lazy(() => import('Contact/App'));
+const SettingApp = lazy(() => import('Setting/App'));
+const InfoApp = lazy(() => import('Info/App'));
 
 export const routes: RouteObject[] = [
   // Public - the only route reachable without a session. See RequireAuth.tsx.
@@ -52,6 +54,22 @@ export const routes: RouteObject[] = [
             element: (
               <RemoteBoundary>
                 <ContactApp />
+              </RemoteBoundary>
+            ),
+          },
+          {
+            path: '/setting/*',
+            element: (
+              <RemoteBoundary>
+                <SettingApp />
+              </RemoteBoundary>
+            ),
+          },
+          {
+            path: '/info/*',
+            element: (
+              <RemoteBoundary>
+                <InfoApp />
               </RemoteBoundary>
             ),
           },

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Forces relative asset URLs (script/link tags injected by
+         HtmlRspackPlugin under publicPath: 'auto') to resolve against the
+         site root instead of the current pathname. Without this, a hard
+         reload on a nested client-side route (e.g. /contact/form) makes the
+         browser resolve "main.bundle.js" as /contact/main.bundle.js, which
+         404s and leaves a blank screen. Safe to hardcode "/" here because
+         this app is always deployed at domain root (see nginx/nginx.conf). -->
+    <base href="/" />
+    <title>Container</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

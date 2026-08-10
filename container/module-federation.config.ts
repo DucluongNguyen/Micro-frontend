@@ -49,6 +49,8 @@ const REMOTE_DEFINITIONS: { key: string; envVar: string }[] = [
   { key: 'Dashboard', envVar: 'URL_HOST_DASHBOARD' },
   { key: 'About', envVar: 'URL_HOST_ABOUT' },
   { key: 'Contact', envVar: 'URL_HOST_CONTACT' },
+  { key: 'Setting', envVar: 'URL_HOST_SETTING' },
+  { key: 'Info', envVar: 'URL_HOST_INFO' },
 ];
 
 // A function, not a plain object: `process.env.*` must be read *after*

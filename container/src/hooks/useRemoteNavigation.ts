@@ -48,6 +48,18 @@ const REMOTES: RemoteDefinition[] = [
     label: 'Contact',
     importNavigation: () => import('Contact/navigation'),
   },
+  {
+    key: 'Setting',
+    mountPath: '/setting',
+    label: 'Setting',
+    importNavigation: () => import('Setting/navigation'),
+  },
+  {
+    key: 'Info',
+    mountPath: '/info',
+    label: 'Info',
+    importNavigation: () => import('Info/navigation'),
+  },
 ];
 
 /**
