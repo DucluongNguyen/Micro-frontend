@@ -1,15 +1,63 @@
-import { Typography } from 'antd';
+import { API_URL } from '@/contants/api';
+import { useColumnTable } from '@/hooks/abouts/useColumnTable';
+import { useFilterAbout } from '@/hooks/abouts/useFilterAbout';
+import { useFormItems } from '@/hooks/abouts/useFormItems';
+import aboutService from '@/services/aboutService';
+import PortalTemplate from '@/templates/PortalTemplate';
+import * as yup from 'yup';
+
+const FILTER_INITIAL_VALUES = { keyword: undefined, role: undefined, status: undefined, createdAt: undefined };
+
+export const validationSchema = yup.object().shape({
+  title: yup.string().required('Vui lòng nhập tiêu đề'),
+  body: yup.string().required('Vui lòng nhập nội dung'),
+});
 
 export default function About() {
+  // !hooks
+  const { filterFields, filters, onSearch } = useFilterAbout();
+  const { fieldItems } = useFormItems();
+  const { columns } = useColumnTable({
+    fieldItems,
+    title: 'About',
+    validationSchema,
+    apiEditUrl: API_URL.POSTS,
+    apiDetailUrl: API_URL.POSTS,
+    isViewPermission: 'TEST',
+    isEditPermission: 'TEST',
+  });
+
+  // !Function
+  const handleSearch = (values: Record<string, unknown>) => {
+    onSearch(values);
+  };
+
+  // !Render
   return (
-    <div style={{ padding: 24 }}>
-      <Typography.Title level={3}>About</Typography.Title>
-      <Typography.Paragraph>
-        This is <code>/about</code> (the remote's index route). This component is exposed as{' '}
-        <code>About/App</code> and federated into the container, but it also runs standalone via{' '}
-        <code>npm start</code> in this folder. See <code>Mission</code> for the other nested route this
-        remote owns.
-      </Typography.Paragraph>
+    <div>
+      <PortalTemplate
+        header={{
+          title: 'Phê duyệt',
+          isAddNew: true,
+          addNewPermission: 'TEST',
+          isExport: true,
+          exportPermission: 'TEST',
+        }}
+        formModal={{
+          initialValues: {},
+          apiCreateUrl: API_URL.POSTS,
+          title: 'Tạo mới About',
+          validationSchema,
+          fieldItems,
+        }}
+        filter={{
+          fields: filterFields,
+          initialValues: FILTER_INITIAL_VALUES,
+          onSearch: handleSearch,
+          filters,
+        }}
+        table={{ api: aboutService.getPosts, columns, queryKey: 'table-about' }}
+      />
     </div>
   );
 }

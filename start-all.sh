@@ -5,7 +5,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-APPS=("container" "dashboard" "about" "contact" "info" "setting")
+APPS=("container" "dashboard" "about" "contact")
 
 # Mỗi app 1 màu ANSI riêng
 COLORS=("35" "36" "33" "32" "34" "31")   # magenta, cyan, yellow, green, blue, red

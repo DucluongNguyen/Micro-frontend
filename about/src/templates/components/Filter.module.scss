@@ -1,0 +1,76 @@
+// CSS Grid, not flexbox: with a fixed N-column template per breakpoint and
+// default (row-sparse) auto-placement, a grid item just flows into the next
+// free cell(s) in the *current* row if there's room, and drops to a new row
+// entirely if there isn't - deterministic, by column count, not by
+// measuring actual pixel widths. A flexbox `margin-left: auto` version of
+// this looked right for one specific field count/width and wrong for every
+// other combination, because it reacts to literal leftover pixels instead
+// of whole slots.
+//
+// .actions' own `grid-column: span N` is set inline from Filter.tsx instead
+// of here, because N depends on `fields.length % columns` - CSS alone has
+// no way to read the field count, only JS does (see getActionsSpan there).
+// The column counts below must stay in sync with COLUMNS_BY_BREAKPOINT in
+// Filter.tsx.
+.row {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); // xs (<576px): 1/row
+  gap: 12px;
+  // `center`, not `end`: each Commons field renders a `Form.Item` with its
+  // own bottom margin (see .field below), while the actions cell is just a
+  // bare Flex with no such margin - bottom-aligning the two grid items would
+  // align their *margin boxes*, which visually sits the input higher than
+  // the buttons (the field's invisible bottom margin eats into the row's
+  // height). Centering lines up their actual visible content instead,
+  // regardless of any residual height difference between control types.
+  align-items: center;
+  margin-top: 20px;
+
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr); // sm: 2/row
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr); // md: 3/row
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr); // lg: 4/row
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(5, 1fr); // xl: 5/row
+  }
+
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(6, 1fr); // xxl: 6/row
+  }
+}
+
+.field {
+  // Grid items default to `min-width: auto`, which lets a wide Select/Input
+  // force its whole column (and the row) wider than intended instead of
+  // shrinking to fit - this is what actually clips/overflows long content
+  // instead of wrapping.
+  min-width: 0;
+
+  // Every Commons control (Select/Input/DatePicker/...) renders a
+  // `Form.Item`, which carries antd's default 24px bottom margin meant for
+  // stacking fields vertically - not relevant here since the grid's own
+  // `gap` already spaces fields out. Left in place, that margin sits below
+  // the visible input and throws off vertical alignment against .actions
+  // (which has none). `:global` because antd's own classes aren't hashed
+  // by CSS Modules.
+  :global(.ant-form-item) {
+    margin-bottom: 0;
+  }
+}
+
+.actions {
+  // Fallback for the brief moment before Grid.useBreakpoint's first effect
+  // runs (or if JS is somehow disabled) - Filter.tsx overrides this inline
+  // (anchored to the grid's last column) as soon as it knows the real
+  // breakpoint. `-2 / -1` here is just a reasonable "flush right" guess in
+  // the meantime.
+  grid-column: -2 / -1;
+}

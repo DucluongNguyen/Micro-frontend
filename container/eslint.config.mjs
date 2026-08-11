@@ -31,6 +31,8 @@ export default tseslint.config(
       'react/prop-types': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/consistent-type-imports': 'warn',
+      'react-hooks/exhaustive-deps': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   prettier,

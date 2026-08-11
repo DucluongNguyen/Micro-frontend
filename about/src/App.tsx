@@ -2,7 +2,16 @@ import { ConfigProvider, type ThemeConfig } from 'antd';
 import { useRoutes } from 'react-router-dom';
 import About from './pages/About';
 import Mission from './pages/Mission';
+import { AppProvider } from './contexts/AppContext';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 export interface RemoteAppProps {
   /**
    * Optional theme override supplied by the host shell. Falls back to a
@@ -43,7 +52,11 @@ export default function App({ theme }: RemoteAppProps) {
   const resolvedTheme: ThemeConfig = { ...defaultTheme, ...theme };
   return (
     <ConfigProvider theme={resolvedTheme}>
-      <AboutRoutes />
+      <QueryClientProvider client={client}>
+        <AppProvider>
+          <AboutRoutes />
+        </AppProvider>
+      </QueryClientProvider>
     </ConfigProvider>
   );
 }

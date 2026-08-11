@@ -20,10 +20,16 @@
   "dependencies": {
     "antd": "^5.24.9",
     "axios": "^1.9.0",
+    "dayjs": "^1.11.21",
+    "formik": "^2.4.9",
+    "lodash": "^4.18.1",
+    "query-string": "^9.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-query": "^3.39.3",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.28.0",
+    "yup": "^1.7.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -31,6 +37,7 @@
     "@rspack/cli": "^1.4.1",
     "@rspack/core": "^1.4.1",
     "@rspack/plugin-react-refresh": "^1.5.2",
+    "@types/lodash": "^4.17.25",
     "@types/node": "^22.15.0",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.5",

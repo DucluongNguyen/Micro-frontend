@@ -17,6 +17,6 @@ export interface RemoteNavItem {
 }
 
 export const navigation: RemoteNavItem[] = [
-  { path: '', label: 'About', icon: 'InfoCircleOutlined' },
-  { path: 'mission', label: 'Mission', icon: 'AimOutlined' },
+  { path: '', label: 'Phê duyệt', icon: 'InfoCircleOutlined' },
+  { path: 'mission', label: 'Chờ phê duyệt', icon: 'AimOutlined' },
 ];
