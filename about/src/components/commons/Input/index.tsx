@@ -1,8 +1,9 @@
-import React from 'react';
-import { Form, Input as InputAntd, Spin } from 'antd';
-import { FieldProps, getIn } from 'formik';
-import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined } from '@ant-design/icons';
 import { colors } from '@/themes';
+import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined } from '@ant-design/icons';
+import { Form, Input as InputAntd } from 'antd';
+import type { FieldProps, FormikProps } from 'formik';
+import { getIn } from 'formik';
+import React from 'react';
 
 interface FormikInputProps {
   label: string;
@@ -12,6 +13,7 @@ interface FormikInputProps {
   disabled?: boolean;
   toggleIcon?: boolean;
   loading?: boolean;
+  afterOnchange?: (value: string, form?: FormikProps<any>) => void;
   isFieldChange?: (name: string) => boolean;
 }
 
@@ -25,11 +27,17 @@ const Input: React.FC<FieldProps & FormikInputProps> = ({
   disabled = false,
   toggleIcon = false,
   loading = false,
+  afterOnchange,
   isFieldChange,
   ...rest
 }) => {
   const error = getIn(form.errors, field.name);
   const touch = getIn(form.touched, field.name);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    field.onChange(e);
+    afterOnchange?.(e.target.value, form);
+  };
 
   const renderLabel = () => {
     if (!label) return null;
@@ -61,6 +69,7 @@ const Input: React.FC<FieldProps & FormikInputProps> = ({
           disabled={disabled || loading} // ✅ disable khi loading
           iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           suffix={suffix} // ✅ thêm loading icon
+          onChange={handleChange}
         />
       ) : (
         <InputAntd
@@ -71,6 +80,7 @@ const Input: React.FC<FieldProps & FormikInputProps> = ({
           placeholder={placeholder}
           disabled={disabled || loading} // ✅ disable khi loading
           suffix={suffix} // ✅ thêm loading icon
+          onChange={handleChange}
         />
       )}
     </Form.Item>

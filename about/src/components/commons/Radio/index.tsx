@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Radio as RadioAntd } from 'antd';
-import { FieldProps } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
 import { colors } from '@/themes';
 
 export interface RadioOption {
@@ -13,7 +13,7 @@ interface CommonRadioProps {
   options: RadioOption[];
   disabled?: boolean;
   optionType?: 'default' | 'button';
-  afterOnchange?: (value: any) => void;
+  afterOnchange?: (value: any, form?: FormikProps<any>) => void;
   required?: boolean;
   isFieldChange?: (name: string) => boolean;
 }
@@ -35,7 +35,7 @@ const Radio: React.FC<FieldProps & CommonRadioProps> = ({
   const handleChange = (e: any) => {
     const selectedOption = e.target.value;
     form.setFieldValue(field.name, selectedOption);
-    afterOnchange && afterOnchange(selectedOption);
+    afterOnchange?.(selectedOption, form);
   };
 
   const renderLabel = () => {

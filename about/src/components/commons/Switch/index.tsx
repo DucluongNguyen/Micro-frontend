@@ -1,12 +1,12 @@
 import React from 'react';
 import { Switch as SwitchAntd, Form } from 'antd';
-import { FieldProps } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
 import { colors } from '@/themes';
 
 interface CommonSwitchProps {
   label?: string;
   disabled?: boolean;
-  afterOnchange?: (checked: boolean) => void;
+  afterOnchange?: (checked: boolean, form?: FormikProps<any>) => void;
   required?: boolean;
   isFieldChange?: (name: string) => boolean;
 }
@@ -26,7 +26,7 @@ const Switch: React.FC<FieldProps & CommonSwitchProps> = ({
   const handleChange = (checked: boolean) => {
     form.setFieldValue(field.name, checked);
     form.setFieldTouched(field.name, true, false); // onBlur alternative
-    afterOnchange?.(checked);
+    afterOnchange?.(checked, form);
   };
 
   const renderLabel = () => {

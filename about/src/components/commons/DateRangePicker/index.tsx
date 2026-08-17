@@ -1,6 +1,6 @@
 import React from 'react';
 import { DatePicker, Form } from 'antd';
-import { FieldProps } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import { colors } from '@/themes';
@@ -12,7 +12,7 @@ interface CommonDateRangePickerProps {
   disabled?: boolean;
   format?: string;
   placeholder?: [string, string];
-  afterOnchange?: (value: string[] | null[]) => void;
+  afterOnchange?: (value: string[] | null[], form?: FormikProps<any>) => void;
   required?: boolean;
   isFieldChange?: (name: string) => boolean;
 }
@@ -32,19 +32,17 @@ const DateRangePicker: React.FC<FieldProps & CommonDateRangePickerProps> = ({
   const error = form.touched[field.name] && form.errors[field.name];
 
   const value = field.value
-    ? [
-        field.value?.[0] ? dayjs(field.value[0]) : undefined,
-        field.value?.[1] ? dayjs(field.value[1]) : undefined,
-      ]
+    ? [field.value?.[0] ? dayjs(field.value[0]) : undefined, field.value?.[1] ? dayjs(field.value[1]) : undefined]
     : [null, null];
 
   const handleChange = (dates: [Dayjs | null, Dayjs | null] | null) => {
     if (!dates || !dates[0] || !dates[1]) {
       form.setFieldValue(field.name, [null, null]);
-      afterOnchange?.([null, null]);
+      afterOnchange?.([null, null], form);
     } else {
-      form.setFieldValue(field.name, [dates[0].toISOString(), dates[1].toISOString()]);
-      afterOnchange?.([dates[0].toISOString(), dates[1].toISOString()]);
+      const value = [dates[0].toISOString(), dates[1].toISOString()];
+      form.setFieldValue(field.name, value);
+      afterOnchange?.(value, form);
     }
     form.setFieldTouched(field.name, true, false);
   };

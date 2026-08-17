@@ -1,5 +1,5 @@
 import { Slider as SliderAntd, Form } from 'antd';
-import { FieldProps } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
 import React from 'react';
 interface CommonSliderProps {
   label?: string;
@@ -10,7 +10,7 @@ interface CommonSliderProps {
   step?: number;
   range?: boolean;
   marks?: any;
-  afterOnchange: (value: any) => void;
+  afterOnchange?: (value: any, form?: FormikProps<any>) => void;
 }
 const Slider: React.FC<FieldProps & CommonSliderProps> = ({
   field,
@@ -30,7 +30,7 @@ const Slider: React.FC<FieldProps & CommonSliderProps> = ({
   const touched = form.touched[field.name];
   const handleChange = (value: any) => {
     form.setFieldValue(field.name, value);
-    afterOnchange?.(value);
+    afterOnchange?.(value, form);
   };
   return (
     <Form.Item

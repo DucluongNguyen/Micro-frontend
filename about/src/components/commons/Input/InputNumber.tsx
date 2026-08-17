@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, InputNumber as AntInputNumber } from 'antd';
-import { FieldProps, getIn } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
+import { getIn } from 'formik';
 import { colors } from '@/themes';
 
 interface FormikInputNumberProps {
@@ -12,7 +13,7 @@ interface FormikInputNumberProps {
   max?: number;
   formatter?: (value: number | string | undefined) => string;
   parser?: (value: string | undefined) => number;
-  afterOnchange?: (value: any) => void;
+  afterOnchange?: (value: any, form?: FormikProps<any>) => void;
   isFieldChange?: (name: string) => boolean;
 }
 
@@ -39,7 +40,7 @@ const InputNumber: React.FC<FieldProps & FormikInputNumberProps> = ({
 
     const [integerPart, decimalPart] = value.toString().split('.');
 
-    const formattedInt = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    const formattedInt = (integerPart || '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
     const formattedDecimal = decimalPart ? decimalPart.replace(/(\d{3})(?=\d)/g, '$1,') : '';
 
@@ -56,8 +57,8 @@ const InputNumber: React.FC<FieldProps & FormikInputNumberProps> = ({
     return isNaN(num) ? '' : num;
   };
 
-  const renderLabel = () => {
-    if (label)
+  const renderLabel = (): React.ReactNode => {
+    if (label) {
       return (
         <span
           style={{
@@ -71,6 +72,9 @@ const InputNumber: React.FC<FieldProps & FormikInputNumberProps> = ({
           {required && <span style={{ color: 'red' }}>*</span>} {label}
         </span>
       );
+    }
+
+    return null;
   };
 
   return (
@@ -95,7 +99,7 @@ const InputNumber: React.FC<FieldProps & FormikInputNumberProps> = ({
         parser={parser || defaultParser}
         onChange={(value) => {
           form.setFieldValue(field.name, value);
-          afterOnchange?.(value);
+          afterOnchange?.(value, form);
         }}
         onBlur={() => form.setFieldTouched(field.name, true)}
       />

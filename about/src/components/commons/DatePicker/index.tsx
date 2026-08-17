@@ -1,6 +1,7 @@
 import React from 'react';
 import { DatePicker as DatePickerAntd, Form } from 'antd';
-import { FieldProps, getIn } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
+import { getIn } from 'formik';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
@@ -15,6 +16,7 @@ interface CommonDatePickerProps {
   format?: string;
   placeholder?: string;
   required?: boolean;
+  afterOnchange?: (value: dayjs.Dayjs | undefined, form?: FormikProps<any>) => void;
   isFieldChange?: (name: string) => boolean;
 }
 
@@ -25,6 +27,7 @@ const DatePicker: React.FC<FieldProps & CommonDatePickerProps> = ({
   disabled = false,
   format = 'YYYY-MM-DD',
   placeholder,
+  afterOnchange,
   isFieldChange,
   required = false,
   ...rest
@@ -33,7 +36,9 @@ const DatePicker: React.FC<FieldProps & CommonDatePickerProps> = ({
   const touch = getIn(form.touched, field.name);
 
   const handleChange = (date: dayjs.Dayjs | null) => {
-    form.setFieldValue(field.name, date ? dayjs(date) : undefined);
+    const value = date ? dayjs(date) : undefined;
+    form.setFieldValue(field.name, value);
+    afterOnchange?.(value, form);
   };
 
   const renderLabel = () => {

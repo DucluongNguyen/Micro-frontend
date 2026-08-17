@@ -2,7 +2,8 @@ import { Commons } from '@/components/commons';
 import { ROLE_OPTIONS, STATUS_OPTIONS } from './useFilterAbout';
 import { useGetApi } from '../useApi';
 import { API_URL } from '@/contants/api';
-import { convertToFormSelect } from '@/helpers';
+import { convertToFormSelect, normalizedFieldItems } from '@/helpers';
+import { FormikProps } from 'formik';
 
 export const useFormItems = () => {
   const { data, refetch } = useGetApi(
@@ -35,9 +36,10 @@ export const useFormItems = () => {
         options: ROLE_OPTIONS,
         label: 'Vai trò',
         labelCol: { span: 7, style: { textAlign: 'left' } },
-        // afterOnchange: (value) => {
-        //   console.log(value);
-        // },
+        afterOnchange: (option: { label: string; value: string }, { setFieldValue }: FormikProps<any>) => {
+          console.log(option.value);
+          setFieldValue('status', 'ACTIVE');
+        },
       },
     },
     {
@@ -127,17 +129,5 @@ export const useFormItems = () => {
     },
   ];
 
-  const normalizedFieldItems = [fieldItemsLeft(), fieldItemsRight()].map((row: Array<any>) =>
-    row.map((field: any) => ({
-      ...field,
-      label:
-        typeof field.label === 'string'
-          ? field.label
-          : typeof field.componentProps?.label === 'string'
-            ? field.componentProps.label
-            : field.name,
-    })),
-  );
-
-  return { fieldItems: normalizedFieldItems };
+  return { fieldItems: normalizedFieldItems([fieldItemsLeft(), fieldItemsRight()]) };
 };

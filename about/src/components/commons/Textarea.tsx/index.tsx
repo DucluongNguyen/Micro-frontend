@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, Form } from 'antd';
-import type { FieldProps } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
 
 const { TextArea } = Input;
 
@@ -9,6 +9,7 @@ interface CommonTextareaProps {
   placeholder?: string;
   rows?: number;
   disabled?: boolean;
+  afterOnchange?: (value: string, form?: FormikProps<any>) => void;
 }
 
 const Textarea: React.FC<FieldProps & CommonTextareaProps> = ({
@@ -18,9 +19,15 @@ const Textarea: React.FC<FieldProps & CommonTextareaProps> = ({
   placeholder = '',
   rows = 4,
   disabled = false,
+  afterOnchange,
   ...rest
 }) => {
   const error = form.touched[field.name] && form.errors[field.name];
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    field.onChange(e);
+    afterOnchange?.(e.target.value, form);
+  };
 
   return (
     <Form.Item
@@ -34,6 +41,7 @@ const Textarea: React.FC<FieldProps & CommonTextareaProps> = ({
         placeholder={placeholder}
         rows={rows}
         disabled={disabled}
+        onChange={handleChange}
         onBlur={() => form.setFieldTouched(field.name, true)}
       />
     </Form.Item>

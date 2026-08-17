@@ -1,12 +1,13 @@
 import { colors } from '@/themes';
 import { Checkbox as CheckboxAntd, Form } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import type { FieldProps } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
 
 interface CommonCheckboxProps {
   label: string;
   disabled?: boolean;
   required?: boolean;
+  afterOnchange?: (checked: boolean, form?: FormikProps<any>) => void;
   isFieldChange?: boolean;
 }
 
@@ -17,12 +18,14 @@ const Checkbox: React.FC<FieldProps & CommonCheckboxProps> = ({
   disabled = false,
   isFieldChange = false,
   required = false,
+  afterOnchange,
   ...rest
 }) => {
   const error = form.touched[field.name] && form.errors[field.name];
 
   const handleChange = (e: CheckboxChangeEvent) => {
     form.setFieldValue(field.name, e.target.checked);
+    afterOnchange?.(e.target.checked, form);
   };
 
   const renderLabel = () => {

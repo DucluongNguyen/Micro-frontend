@@ -44,7 +44,7 @@ export default function About() {
           exportPermission: 'TEST',
         }}
         formModal={{
-          initialValues: {},
+          initialValues: { title: undefined, body: undefined },
           apiCreateUrl: API_URL.POSTS,
           title: 'Tạo mới About',
           validationSchema,

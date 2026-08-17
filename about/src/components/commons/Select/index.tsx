@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { Select as SelectAntd, Form } from 'antd';
 import type { SelectProps } from 'antd';
 import { getIn } from 'formik';
-import type { FieldProps } from 'formik';
+import type { FieldProps, FormikProps } from 'formik';
 import { debounce } from 'lodash';
 import { colors } from '@/themes';
 
@@ -25,13 +25,13 @@ interface CommonSelectProps {
   mode?: 'multiple' | 'tags';
   labelInValue?: boolean;
   onScrollToEnd?: () => void;
-  afterOnchange?: (value: any) => void;
+  afterOnchange?: (value: any, form?: FormikProps<any>) => void;
   onSearchApi?: (keyword: string) => void;
   required?: boolean;
   isFieldChange?: (name: string) => boolean;
 }
 
-const Select: React.FC<FieldProps & CommonSelectProps & SelectProps> = ({
+const Select: React.FC<FieldProps<any> & CommonSelectProps & SelectProps> = ({
   field,
   form,
   label,
@@ -76,7 +76,7 @@ const Select: React.FC<FieldProps & CommonSelectProps & SelectProps> = ({
     // form.setFieldTouched(field.name, true, false);
 
     const selectedOption = resolvedOptions.find((opt) => opt.value === value);
-    afterOnchange?.(selectedOption);
+    afterOnchange?.(selectedOption, form);
   };
 
   const removeVietnameseTones = (str: string) => {

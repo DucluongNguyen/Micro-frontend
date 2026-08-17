@@ -64,3 +64,18 @@ export const convertToFormSelect = (
 export const formatDate = (value: Date | string) => {
   return dayjs(value).format('YYYY-MM-DD');
 };
+
+export const normalizedFieldItems = (
+  items: Array<Array<{ name: string; component: any; label?: string; componentProps?: Record<string, any> }>>,
+) =>
+  items?.map((row) =>
+    row.map((field) => ({
+      ...field,
+      label:
+        typeof field.label === 'string'
+          ? field.label
+          : typeof field.componentProps?.label === 'string'
+            ? field.componentProps.label
+            : field.name,
+    })),
+  );
